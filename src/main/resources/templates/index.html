@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>     
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>APP</title>     
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" />
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+	<style>
+	/*.index{background-image: url(../static/images/timg.jpg);}*/
+	.index{background-image: url("/images/timg.jpg")}
+	.username {margin-left: 70%;}
+</style>
+<script>
+	$(function(){
+		$.ajax({
+			type:"get",
+			url:"/partner/getUser",
+			async:false,
+			xhrFields: {
+		    	withCredentials: true
+			},
+			success:function(data){
+				$("#username").text("当前用户："+data.username);
+			}
+		});
+	})
+	
+	
+		function addComment(){
+		var comment = $("#comment").val();
+		$.ajax({
+			type:"post",
+			url:"/comment/add",
+			dataType:"json",
+			contentType:"application/json;charset=UTF-8",
+			data:"{\"comment\":\""+comment+"\"}",
+			xhrFields: {
+				  withCredentials: true
+			},
+			async:false,
+			success:function(data){
+				if(data>0){
+					$("#comment").val("");
+					alert("评论成功！");
+				}else{
+					alert("操作失败！");
+				}
+			}
+		});
+	}
+		
+		function findAllComment(){
+			var popup = document.getElementById("popup");
+			if(popup.getElementsByTagName("span").length > 0){
+				popup.removeChild("span");
+			}
+			$.ajax({
+				type:"get",
+				url:"http://localhost:8080/comment/findAllComment",
+				xhrFields: {
+				    withCredentials: true
+				},
+				success:function(data){
+					for (var i = 0; i < data.length; i++) {
+						var span = document.createElement("span");
+						span.innerHTML = data[i].partner.username + "：" + data[i].comment;
+						popup.appendChild(span);
+					}
+				}
+			});
+	}
+		
+		
+		function getZan(){
+				$.ajax({
+					type:"get",
+					url:"http://localhost:8080/zan/findPartner",
+					xhrFields: {
+					    withCredentials: true
+					},
+					success:function(data){
+						
+						if(data == "success"){
+							
+							$.ajax({
+								type:"get",
+								url:"http://localhost:8080/zan/deletePartner",
+								xhrFields: {
+								    withCredentials: true
+								},
+								success:function(data){
+									if(data > 0){
+										
+										$.ajax({
+											type:"get",
+											url:"http://localhost:8080/zan/getCount",
+											xhrFields: {
+											    withCredentials: true
+											},
+											success:function(data){
+												$("#countZan").text(data);
+											}
+										})
+									} 
+								}
+							})
+							
+							
+						} else {
+							
+							$.ajax({
+								type:"get",
+								url:"http://localhost:8080/zan/addPartner",
+								xhrFields: {
+								    withCredentials: true
+								},
+								success:function(data){
+									if(data > 0){
+										
+										$.ajax({
+											type:"get",
+											url:"http://localhost:8080/zan/getCount",
+											xhrFields: {
+											    withCredentials: true
+											},
+											success:function(data){
+												$("#countZan").text(data);
+											}
+										})
+									} 
+								}
+							})
+						}
+					}
+				})
+				
+			}
+			
+			function outLogin(){
+				$.ajax({
+					type:"get",
+					url:"http://localhost:8080/partner/outLogin",
+					async:false,
+					success:function(data){
+						window.location.href = "/partner/login";
+					}
+				});
+			}
+			
+			function play(){
+				var audio = document.getElementById("audio");
+				if(audio.paused){
+					audio.play();
+				}else{
+					audio.pause();
+				}
+			}
+			
+</script>
+</head>               
+<body>
+    <div data-role="page" class="index">
+    	<div data-role="header" data-position="fixed">
+            <a href="#" data-icon="back" onclick="outLogin()">退出</a>
+			<h1>我的伙伴</h1>
+			<a href="/partner/about" data-icon="info" class="ui-btn-right">关于</a>
+        </div>
+		<div data-role="content">
+			<p id="username" class="username"></p>
+			<img src="/images/logo.jpg"
+				style="margin-top: 20%; width:50%; margin-left:25%;"/>
+			<br />
+			<h3 align="center">唯有美食与伙伴，不可辜负。</h3>
+		</div>
+        <div data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a id="growingup" href="/partner/growingup" data-icon="info">成长轨迹</a></li>
+					<li><a id="recommend" href="/partner/recommend" data-icon="info">我的推荐</a></li>
+					<li><a id="life" href="/partner/life" data-icon="info">人生阶段</a></li>
+				</ul>
+			</div>
+		</div>
+    </div>
+</body>
+</html>

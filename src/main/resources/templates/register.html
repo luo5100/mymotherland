@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>用户注册</title>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" />
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+		<style>
+			.register {background-image: url(/images/timg.jpg);}
+		</style>
+		<script>
+			function addUser(){
+				var username = $("#username1").val();
+				var password = $("#password1").val();
+				$.ajax({
+					type:"post",
+					url:"/partner/addUser",
+					dataType:"json",
+					contentType:"application/json;charset=UTF-8",
+					data:"{\"username\":\""+username+"\", \"password\":\""+password+"\"}",
+					async:false,
+					xhrFields: {
+						withCredentials: true
+					},	
+					success:function(data){
+						if(data>0){
+							alert("注册成功！")
+							window.location.href = "/partner/login"
+						}else{
+							alert("注册失败！")
+							window.location.href = "/partner/register"
+						}
+					}
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<div data-role="page" class="register">
+			<h2 style="text-align: center;">用户注册</h2>
+			<div data-role="content" class="login">
+				 <form action="#" method="post" >
+				 	<input type="text" name="username" id="username1" placeholder="账号："  />
+					<input type="password" name="password" id="password1" placeholder="密码："  />
+					<fieldset class="ui-grid-a">
+						<div class="ui-block-a">
+							<input type="submit" value="注册" onclick="addUser()"/>
+						</div>
+						<div class="ui-block-b">
+							<a data-role="button" data-rel="back">返回</a>
+						</div>						
+					</fieldset>
+
+				
+			</div>
+		</div>
+	</body>
+</html>

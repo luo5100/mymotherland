@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>     
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的成长轨迹</title>     
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" />
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+	<style type="text/css">
+	.growingup{background-image: url(/images/timg.jpg);}
+	.ui-icon-zan{ background-image:url(/images/zan.jpg);}
+	.ui-icon{ background-size:18px 26px;}
+</style>
+	<script>
+		
+		function addComment(){
+			var comment = $("#comment").val();
+			$.ajax({
+				type:"post",
+				url:"http://localhost:8080/comment/add",
+				dataType:"json",
+				contentType:"application/json;charset=UTF-8",
+				data:"{\"comment\":\""+comment+"\"}",
+				xhrFields: {
+					  withCredentials: true
+				},
+				async:false,
+				success:function(data){
+					if(data>0){
+						$("#comment").val("");
+						alert("评论成功！");
+					}else{
+						alert("操作失败！");
+					}
+				}
+			});
+		}
+		
+		function findAllComment(){
+			var popup = document.getElementById("popup");
+			if(popup.getElementsByTagName("span").length > 0){
+				popup.removeChild("span");
+			}
+			$.ajax({
+				type:"get",
+				url:"http://localhost:8080/comment/findAllComment",
+				xhrFields: {
+				    withCredentials: true
+				},
+				success:function(data){
+					for (var i = 0; i < data.length; i++) {
+						var span = document.createElement("span");
+						span.innerHTML = data[i].partner.username + "：" + data[i].comment;
+						popup.appendChild(span);
+					}
+				}
+			});
+	}	
+	
+		function getZan(){
+				$.ajax({
+					type:"get",
+					url:"http://localhost:8080/zan/findUser",
+					xhrFields: {
+					    withCredentials: true
+					},
+					success:function(data){
+						
+						if(data == "success"){
+							
+							$.ajax({
+								type:"get",
+								url:"http://localhost:8080/zan/deleteUser",
+								xhrFields: {
+								    withCredentials: true
+								},
+								success:function(data){
+									if(data > 0){
+										
+										$.ajax({
+											type:"get",
+											url:"http://localhost:8080/zan/getCount",
+											xhrFields: {
+											    withCredentials: true
+											},
+											success:function(data){
+												$("#countZan").text(data);
+											}
+										})
+									} 
+								}
+							})
+							
+							
+						} else {
+							
+							$.ajax({
+								type:"get",
+								url:"http://localhost:8080/zan/addUser",
+								xhrFields: {
+								    withCredentials: true
+								},
+								success:function(data){
+									if(data > 0){
+										
+										$.ajax({
+											type:"get",
+											url:"http://localhost:8080/zan/getCount",
+											xhrFields: {
+											    withCredentials: true
+											},
+											success:function(data){
+												$("#countZan").text(data);
+											}
+										})
+									} 
+								}
+							})
+						}
+					}
+				})
+				
+			}
+		
+	</script>
+</head>               
+<body>
+	<div data-role="page" class="growingup">
+    	<div data-role="header" data-position="fixed">
+          <a href="/partner/index" data-icon="home">主页</a>
+					<h1>我的伙伴</h1>
+					<a href="/partner/about" data-icon="info" class="ui-btn-right">关于</a>
+      </div>
+		<div data-role="content">
+			<p>
+				<h2 align="center">我的成长轨迹：</h2>
+				<h4>&nbsp;&nbsp;&nbsp;&nbsp;成长的道路仿佛若以小河为界线，左边是回忆，右边是现实，而我们始终坐着小船行驶在河的左右岸来回的穿梭着，
+					生活着，好像永远都不会始终的停留在哪岸，若失去方向的蚂蚁，始终寻找着什么，而我们却在左右岸觅着什么。</h4>
+				<h3>联系方式：15099807984</h3>
+			</p>
+			<br />
+			
+			<form>
+				<a  data-theme="b" href="#" onclick="getZan()">
+					<img src="/images/zan.jpg" style="width: 8%; height: 8%;">
+				</a>
+				<span id="countZan"></span>
+				&nbsp;&nbsp;&nbsp;
+				<input type="text" name="comment" id="comment" placeholder="评论："/>
+				<!--<a href="#" data-role="button" data-theme="b" onclick="addComment()">提交评论</a>-->
+				<input type="submit" value="提交评论" onclick="addComment();"/>
+			</form>
+			
+			<a href="#popup" data-rel="popup" data-position-to="window" style="margin: 3%;" 
+			data-role="button" onclick="findAllComment()">点击查看评论</a>
+
+			<a href="http://localhost:8080/comment/findAllComments">查看评论</a>
+			<hr>
+			<table class="list">
+				<tr>
+					<th>姓名</th>
+					<th>评论</th>
+				</tr>
+				<tr th:each="allComment : ${allComment}">
+					<td th:text="${allComment.partner.username}"></td>
+					<td th:text="${allComment.comment}"></td>
+				</tr>
+			</table>
+			
+			<div data-role="popup" id="popup">
+				
+		</div>
+		
+			
+    <div data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a id="growingup" href="/partner/growingup" data-icon="info">成长轨迹</a></li>
+					<li><a id="recommend" href="/partner/recommend" data-icon="info">我的推荐</a></li>
+					<li><a id="life" href="/partner/life" data-icon="info">人生阶段</a></li>
+				</ul>
+			</div>
+		</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>     
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>330我的伙伴登录页面</title>     
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" />
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+	<style>
+	/*.login{background-image: url(../static/images/timg.jpg);}*/
+	.login{background-image: url(/images/timg.jpg);}
+</style>
+<script>
+	function getUser(){
+		var username = $("#username").val();
+		if(username==""||username==null){
+			alert("请输入账号！")
+		}
+		var password = $("#password").val();
+		if(password==""||password==null){
+			alert("请输入密码！")
+		}
+		
+		$.ajax({
+			type:"post",
+			url:"/partner/login",
+			dataType:"json",
+			contentType:"application/json;charset=UTF-8",
+			data:"{\"username\":\""+username+"\", \"password\":\""+password+"\"}",
+			async:false,
+			xhrFields: {
+				 withCredentials: true
+			},
+			success:function(data){
+				if(data.result == "success"){
+					window.location.href = "/partner/index"
+				}else if(data.result == "successToAdmin"){
+					window.location.href = ""
+				}else if(data.result == "false"){
+					window.location.href = "/partner/login"
+					alert("你的账号或密码错误")
+				}
+			}
+		});
+		
+	}
+	
+	function addUser(){
+		var username = $("#username1").val();
+		var password = $("#password1").val();
+		$.ajax({
+			type:"post",
+			url:"/partner/addUser",
+			dataType:"json",
+			contentType:"application/json;charset=UTF-8",
+			data:"{\"username\":\""+username+"\", \"password\":\""+password+"\"}",
+			async:false,
+			xhrFields: {
+				withCredentials: true
+			},	
+			success:function(data){
+				if(data>0){
+					alert("注册成功！")
+					window.location.href = "/partner/login"
+				}else{
+					alert("注册失败！")
+					window.location.href = "/partner/register"
+				}
+			}
+		});
+	}
+	
+
+	
+</script>
+</head>               
+<body>
+	<div data-role="page" class="login">
+		<div data-role="content">
+			<img src="/images/buddy.jpg"
+				style="width:50%; margin-left:25%;"/>
+			<form action="#" method="post">
+				<input type="text" name="username" id="username" placeholder="账号："/>
+				<input type="password" name="password" id="password" placeholder="密码："/>
+				<fieldset class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="submit" value="登录" onclick="getUser()"/>
+					</div>
+					<div class="ui-block-b">
+						<a href="/partner/register" data-role="button">注册</a>
+					</div>						
+				</fieldset>
+			</form>
+		</div>
+    </div>
+</body>
+</html>

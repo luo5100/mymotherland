@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>     
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的伙伴</title>     
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" />
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+	<style>
+	.index{background-image: url(/images/timg.jpg);}
+</style>
+</head>               
+<body>
+    <div data-role="page" class="index">
+    	<div data-role="header" data-position="fixed">
+            <a href="/partner/index" data-icon="home">主页</a>
+			<h1>我的伙伴</h1>
+			<a href="/partner/about" data-icon="info" class="ui-btn-right">关于</a>
+        </div>
+		<div data-role="content" style="text-align: center;margin-top: 40%;">
+				<h2>201635020330</h2>
+				<h2>罗远参</h2>
+		</div>
+        <div data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a id="growingup" href="/partner/growingup" data-icon="info">成长轨迹</a></li>
+					<li><a id="recommend" href="/partner/recommend" data-icon="info">我的推荐</a></li>
+					<li><a id="life" href="/partner/life" data-icon="info">人生阶段</a></li>
+				</ul>
+			</div>
+		</div>
+    </div>
+</body>
+</html>

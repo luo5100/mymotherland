@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>     
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的伙伴</title>     
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" />
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+</head>             
+<body>
+	<div data-role="page">
+		<div data-role="header" data-position="fixed">
+          <a href="/partner/index" data-icon="home">主页</a>
+					<h1>我的伙伴</h1>
+					<a href="/partner/about" data-icon="info" class="ui-btn-right">关于</a>
+      	</div>
+		<div data-role="content">
+			 <div data-role="collapsible-set">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>上学前</h3>
+					<h2 style="text-align: center;">小猫</h2>
+					<p>
+						<img src="/images/cat.jpg" style="height: 100%; width: 100%;"/>
+					</p>
+				</div>  
+				<div data-role="collapsible" data-collapsed="true">
+					<h3>小学期间</h3>
+					<h2 style="text-align: center;">小狗</h2>
+					<p>
+						<img src="/images/dog.jpg" style="height: 100%; width: 100%;"/>
+					</p>
+				</div> 
+				<div data-role="collapsible" data-collapsed="true">
+					<h3>初中期间</h3>
+					<h2 style="text-align: center;">篮球</h2>
+					<p>
+						<img src="/images/basketball.jpg" style="height: 100%; width: 100%;"/>
+					</p>
+				</div> 
+				<div data-role="collapsible" data-collapsed="true">
+					<h3>高中期间</h3>
+					<h2 style="text-align: center;">小狗</h2>
+					<p>
+						<img src="/images/dog.jpg" style="height: 100%; width: 100%;"/>
+					</p>
+				</div> 
+				<div data-role="collapsible" data-collapsed="true">
+					<h3>大学期间</h3>
+					<h2 style="text-align: center;">Java</h2>
+					<p>
+						<img src="/images/java.jpg" style="height: 100%; width: 100%;"/>
+					</p>
+				</div> 
+			 </div>
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a id="growingup" href="/partner/growingup" data-icon="info">成长轨迹</a></li>
+					<li><a id="recommend" href="/partner/recommend" data-icon="info">我的推荐</a></li>
+					<li><a id="life" href="/partner/life" data-icon="info">人生阶段</a></li>
+				</ul>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
+
